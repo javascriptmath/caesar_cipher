@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encrypt Your Message</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #1e1e1e; /* Dark background */
+            color: #d4d4d4; /* Light text color */
+        }
+
+        .container {
+            text-align: center;
+            background-color: #252526; /* Slightly lighter dark background */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #569cd6; /* Accent color */
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 60%;
+            border: 1px solid #3c3c3c; /* Border color similar to the background */
+            border-radius: 4px;
+            background-color: #1e1e1e; /* Input background */
+            color: #d4d4d4; /* Input text color */
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-left: 10px;
+            background-color: #007acc; /* Button background color */
+            color: white; /* Button text color */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #005a9e; /* Darker hover effect */
+        }
+
+        .output {
+            margin-top: 20px;
+            font-size: 18px;
+            padding: 10px;
+            border: 1px solid #3c3c3c;
+            border-radius: 4px;
+            background-color: #1e1e1e; /* Output background */
+            color: #d4d4d4; /* Output text color */
+            width: 80%;
+            margin: 20px auto 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Encrypt Your Message</h1>
+        <input type="text" id="message" placeholder="Enter your message here">
+        <button onclick="handleEncrypt()">Encrypt</button>
+        <div class="output" id="encryptedMessage">Encrypted message will appear here.</div>
+    </div>
+
+    <script>
+        function getMessageToEncrypt() {
+            return document.getElementById('message').value;
+        }
+
+        function setEncryptedMessage(encryptedText) {
+            document.getElementById('encryptedMessage').innerText = encryptedText;
+        }
+
+        function encryptText(inputText) {
+           // Encryption key
+           const key = 5;
+
+           // Ledger
+           const ledger = 'qwertyuiopasdfghjklzxcvbnm 1234567890'
+
+           // Output message
+           let outputText = ''
+
+           // Perform encryption
+           for (const char of inputText) {
+            // Find the index of the character in ledger
+            const inputIndex = ledger.indexOf(char);
+
+            // Perform encryption
+            const outputIndex = inputIndex + key;
+
+            //Handle wraparound
+            if (outputIndex >= ledger.length) {
+                outputIndex -= ledger.length;
+            }
+
+            //Append encrypted character to output if character is in ledger
+            if (inputIndex !== -1) {
+                outputText += ledger[outputIndex];
+            }
+            else {
+                outputText += char;
+            }
+           }
+           return outputText;
+        }
+
+        function handleEncrypt() {
+            const message = getMessageToEncrypt();
+            const encryptedMessage = encryptText(message);
+            setEncryptedMessage(encryptedMessage);
+        }
+    </script>
+</body>
+</html>
